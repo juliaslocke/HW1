@@ -14,6 +14,9 @@
 ## [PROBLEM 1] - 150 points
 ## Below is code for one of the simplest possible Flask applications. Edit the code so that once you run this application locally and go to the URL 'http://localhost:5000/class', you see a page that says "Welcome to SI 364!"
 
+import requests
+import json
+
 from flask import Flask
 app = Flask(__name__)
 app.debug = True
@@ -21,6 +24,20 @@ app.debug = True
 @app.route('/')
 def hello_to_you():
     return 'Hello!'
+
+@app.route('/class')
+def hello_class():
+	return 'Welcome to SI 364!'
+
+@app.route('/movie/<movie_name>')
+def movie(movie_name):
+	d = {'term': movie_name, 'media': 'movie', 'format':'json'}
+	results = requests.get('https://itunes.apple.com/search?', params = d)
+	#info = json.loads(results.text)
+	#new_info = json.dumps(info)
+	return results.text
+
+
 
 
 if __name__ == '__main__':
